@@ -154,9 +154,13 @@ if (isset($searchBuilder['criteria']) && is_array($searchBuilder['criteria'])) {
 }
 
 
+$logic = $searchBuilder['logic'] ?? 'AND'; // Default to 'AND'
+
+
+
 // Combine WHERE clauses if any
 if (!empty($whereClauses)) {
-    $query .= " WHERE " . implode(" AND ", $whereClauses);
+    $query .= " WHERE " . implode(" $logic ", $whereClauses);
 }
 
 // Count filtered records

@@ -1,31 +1,13 @@
 {
-    "draw": 3,
+    "draw": 9,
     "recordsTotal": 6,
-    "recordsFiltered": 5,
+    "recordsFiltered": 2,
     "data": [
-        {
-            "id": 1,
-            "name": "John Doe",
-            "email": "john@example.com",
-            "country": "USA"
-        },
-        {
-            "id": 2,
-            "name": "Jane Smith",
-            "email": "jane@example.com",
-            "country": "Canada"
-        },
         {
             "id": 3,
             "name": "Ali Osseili",
             "email": "ali@example.com",
             "country": "Lebanon"
-        },
-        {
-            "id": 4,
-            "name": "Tom Johnson",
-            "email": "tom@example.com",
-            "country": "UK"
         },
         {
             "id": 5,
