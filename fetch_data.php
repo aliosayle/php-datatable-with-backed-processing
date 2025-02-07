@@ -32,6 +32,7 @@ $searchValue = $_POST['search']['value'] ?? '';
 $searchBuilder = $_POST['searchBuilder'] ?? [];
 $orderColumnIndex = $_POST['order'][0]['column'];
 $orderDirection = $_POST['order'][0]['dir'];
+$columns = $_POST['columns'];
 
 // Check if 'searchBuilder' is set and decode it safely
 
@@ -45,7 +46,7 @@ $totalRecordsResult = $mysqli->query("SELECT COUNT(*) FROM users");
 $totalRecords = $totalRecordsResult->fetch_row()[0];
 
 // Define the fields to be selected and searched
-$fields = ['id', 'name', 'email', 'country'];
+$fields = $columns;
 
 // Build the base query
 $query = "SELECT " . implode(", ", $fields) . " FROM users";
@@ -143,6 +144,12 @@ if (isset($searchBuilder['criteria']) && is_array($searchBuilder['criteria'])) {
                 $params[] = $criterion['value'][1];
                 $types .= 'ii';
                 break;
+            case '!between':
+                $whereClauses[] = "$field NOT BETWEEN ? AND ?";
+                $params[] = $criterion['value'][0];
+                $params[] = $criterion['value'][1];
+                $types .= 'ii';
+                break;
             case 'null':
                 $whereClauses[] = "$field IS NULL";
                 break;
@@ -155,8 +162,6 @@ if (isset($searchBuilder['criteria']) && is_array($searchBuilder['criteria'])) {
 
 
 $logic = $searchBuilder['logic'] ?? 'AND'; // Default to 'AND'
-
-
 
 // Combine WHERE clauses if any
 if (!empty($whereClauses)) {

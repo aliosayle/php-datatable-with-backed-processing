@@ -25,23 +25,43 @@
     <script src="https://cdn.datatables.net/searchbuilder/1.3.0/js/dataTables.searchBuilder.min.js"></script>
     <script>
 $(document).ready(function() {
+    // Define a mapping of header text to data column names
+    var columnMapping = {
+        'ID': 'id',
+        'Name': 'name',
+        'Email': 'email',
+        'Country': 'country',
+        // Add more mappings here as needed
+    };
+
+    // Get column headers and map them to the data fields
+    var columnNames = [];
+    $('#myTable th').each(function() {
+        var headerText = $(this).text().trim();
+        if (columnMapping[headerText]) {
+            columnNames.push(columnMapping[headerText]); // Use the mapped data field
+        }
+    });
+
     $('#myTable').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
             url: 'fetch_data.php', // Backend PHP file
-            type: 'POST'
+            type: 'POST',
+            data: function(d) {
+                // Send column names to the backend along with other request data
+                d.columns = columnNames;
+            }
         },
         dom: 'Qlfrtip',  // Enables SearchBuilder ('Q' for SearchBuilder, 'lfrtip' for standard elements)
         searchBuilder: true,  // Ensure SearchBuilder is enabled
-        columns: [
-            { data: 'id' },
-            { data: 'name' },
-            { data: 'email' },
-            { data: 'country' },
-        ]
+        columns: columnNames.map(function(col) {
+            return { data: col }; // Use the data column names for DataTable's 'data' property
+        })
     });
 });
-    </script>
+</script>
+
 </body>
 </html>

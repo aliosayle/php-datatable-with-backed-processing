@@ -1,14 +1,8 @@
 {
-    "draw": 9,
+    "draw": 11,
     "recordsTotal": 6,
-    "recordsFiltered": 2,
+    "recordsFiltered": 1,
     "data": [
-        {
-            "id": 3,
-            "name": "Ali Osseili",
-            "email": "ali@example.com",
-            "country": "Lebanon"
-        },
         {
             "id": 5,
             "name": "Angela White",
