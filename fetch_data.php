@@ -25,15 +25,15 @@ $mysqli->set_charset($charset);
 file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true));
 
 // DataTables request parameters
-$draw = $_POST['draw'] ?? 0;
-$start = $_POST['start'] ?? 0;
-$length = $_POST['length'] ?? 10;
-$searchValue = $_POST['search']['value'] ?? '';
-$searchBuilder = $_POST['searchBuilder'] ?? [];
-$orderColumnIndex = $_POST['order'][0]['column'];
-$orderDirection = $_POST['order'][0]['dir'];
-$columns = $_POST['columns'];
-$table = $_POST['tableName'];
+$draw = filter_input(INPUT_POST, 'draw', FILTER_VALIDATE_INT) ?? 0;
+$start = filter_input(INPUT_POST, 'start', FILTER_VALIDATE_INT) ?? 0;
+$length = filter_input(INPUT_POST, 'length', FILTER_VALIDATE_INT) ?? 10;
+$searchValue = filter_input(INPUT_POST, 'search', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY)['value'] ?? '';
+$searchBuilder = filter_input(INPUT_POST, 'searchBuilder', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? [];
+$orderColumnIndex = filter_input(INPUT_POST, 'order', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY)[0]['column'];
+$orderDirection = filter_input(INPUT_POST, 'order', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY)[0]['dir'];
+$columns = filter_input(INPUT_POST, 'columns', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+$table = filter_input(INPUT_POST, 'tableName', FILTER_SANITIZE_STRING);
 
 // Check if 'searchBuilder' is set and decode it safely
 
