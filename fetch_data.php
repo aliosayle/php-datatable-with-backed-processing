@@ -137,13 +137,18 @@ if (isset($searchBuilder['criteria']) && is_array($searchBuilder['criteria'])) {
                 $params[] = $value;
                 $types .= 's';
                 break;
-            // Add more conditions as needed
-        case 'between':
-            $whereClauses[] = "$field BETWEEN ? AND ?";
-            $params[] = $criterion['value'][0];
-            $params[] = $criterion['value'][1];
-            $types .= 'ii'; // Assuming the values are strings, change to 'ii' if they are integers
-            break;
+            case 'between':
+                $whereClauses[] = "$field BETWEEN ? AND ?";
+                $params[] = $criterion['value'][0];
+                $params[] = $criterion['value'][1];
+                $types .= 'ii';
+                break;
+            case 'null':
+                $whereClauses[] = "$field IS NULL";
+                break;
+            case '!null':
+                $whereClauses[] = "$field IS NOT NULL";
+                break;
         }
     }
 }
@@ -171,15 +176,15 @@ $filteredStmt->execute();
 $filteredResult = $filteredStmt->get_result();
 $filteredRecords = $filteredResult->fetch_row()[0];
 
-if(isset($orderColumnIndex) && isset($orderDirection)) {
+if (isset($orderColumnIndex) && isset($orderDirection)) {
     $query .= " ORDER BY $fields[$orderColumnIndex] $orderDirection";
 }
 
 
 // Add pagination only if needed
 $query .= " LIMIT ?, ?";
-$params[] = (int)$start;
-$params[] = (int)$length;
+$params[] = (int) $start;
+$params[] = (int) $length;
 $types .= 'ii'; // Integer types for pagination parameters
 
 file_put_contents(__DIR__ . '/query.log', json_encode($query, JSON_PRETTY_PRINT));
@@ -199,9 +204,9 @@ $records = $recordsResult->fetch_all(MYSQLI_ASSOC);
 
 // Prepare JSON response
 $response = [
-    "draw" => (int)$draw,
-    "recordsTotal" => (int)$totalRecords,
-    "recordsFiltered" => (int)$filteredRecords,
+    "draw" => (int) $draw,
+    "recordsTotal" => (int) $totalRecords,
+    "recordsFiltered" => (int) $filteredRecords,
     "data" => $records,
 ];
 

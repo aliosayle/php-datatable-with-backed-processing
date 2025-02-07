@@ -1,1 +1,1 @@
-"SELECT id, name, email, country FROM users WHERE Email LIKE ? ORDER BY id asc LIMIT ?, ?"
+"SELECT id, name, email, country FROM users WHERE Email IS NOT NULL ORDER BY id asc LIMIT ?, ?"
