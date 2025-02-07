@@ -1,0 +1,59 @@
+Array
+(
+    [criteria] => Array
+        (
+            [0] => Array
+                (
+                    [criteria] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [condition] => !=
+                                    [data] => ID
+                                    [origData] => id
+                                    [type] => num
+                                    [value] => Array
+                                        (
+                                            [0] => 3
+                                        )
+
+                                    [value1] => 3
+                                )
+
+                            [1] => Array
+                                (
+                                    [condition] => starts
+                                    [data] => Name
+                                    [origData] => name
+                                    [type] => string
+                                    [value] => Array
+                                        (
+                                            [0] => fca
+                                        )
+
+                                    [value1] => fca
+                                )
+
+                        )
+
+                    [logic] => AND
+                )
+
+            [1] => Array
+                (
+                    [condition] => contains
+                    [data] => Email
+                    [origData] => email
+                    [type] => string
+                    [value] => Array
+                        (
+                            [0] => example
+                        )
+
+                    [value1] => example
+                )
+
+        )
+
+    [logic] => OR
+)

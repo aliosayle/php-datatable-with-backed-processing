@@ -1,0 +1,37 @@
+{
+    "draw": 70,
+    "recordsTotal": 5,
+    "recordsFiltered": 5,
+    "data": [
+        {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com",
+            "country": "USA"
+        },
+        {
+            "id": 2,
+            "name": "Jane Smith",
+            "email": "jane@example.com",
+            "country": "Canada"
+        },
+        {
+            "id": 3,
+            "name": "Ali Osseili",
+            "email": "ali@example.com",
+            "country": "Lebanon"
+        },
+        {
+            "id": 4,
+            "name": "Tom Johnson",
+            "email": "tom@example.com",
+            "country": "UK"
+        },
+        {
+            "id": 5,
+            "name": "Angela White",
+            "email": "angela@example.com",
+            "country": "France"
+        }
+    ]
+}
