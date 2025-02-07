@@ -4,7 +4,7 @@ ini_set('log_errors', 1); // Enable error logging
 ini_set('error_log', __DIR__ . '/debug.log'); // Log errors to the debug.log file
 
 $host = 'localhost';
-$db = 'search_builder';
+$db = 'CMS';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';
@@ -33,6 +33,7 @@ $searchBuilder = $_POST['searchBuilder'] ?? [];
 $orderColumnIndex = $_POST['order'][0]['column'];
 $orderDirection = $_POST['order'][0]['dir'];
 $columns = $_POST['columns'];
+$table = $_POST['tableName'];
 
 // Check if 'searchBuilder' is set and decode it safely
 
@@ -42,14 +43,14 @@ if ($searchBuilder === null) {
 }
 
 // Base query for counting total records
-$totalRecordsResult = $mysqli->query("SELECT COUNT(*) FROM users");
+$totalRecordsResult = $mysqli->query("SELECT COUNT(*) FROM $table");
 $totalRecords = $totalRecordsResult->fetch_row()[0];
 
 // Define the fields to be selected and searched
 $fields = $columns;
 
 // Build the base query
-$query = "SELECT " . implode(", ", $fields) . " FROM users";
+$query = "SELECT " . implode(", ", $fields) . " FROM $table";
 $whereClauses = [];
 $params = [];
 $types = ''; // String to hold the parameter types for mysqli
@@ -154,7 +155,7 @@ if (isset($searchBuilder['criteria']) && is_array($searchBuilder['criteria'])) {
                 $whereClauses[] = "$field IS NULL";
                 break;
             case '!null':
-                $whereClauses[] = "$field IS NOT NULL";
+                $whereClauses[] = "$field IS NOT NULL && $field != ''";
                 break;
         }
     }
@@ -169,7 +170,7 @@ if (!empty($whereClauses)) {
 }
 
 // Count filtered records
-$filteredQuery = "SELECT COUNT(*) FROM users";
+$filteredQuery = "SELECT COUNT(*) FROM $table";
 if (!empty($whereClauses)) {
     $filteredQuery .= " WHERE " . implode(" AND ", $whereClauses);
 }

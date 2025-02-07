@@ -13,9 +13,10 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Country</th>
+                <th>Number</th>
+                <th>Weight</th>
+                <th>Content</th>
+                <th>Bol ID</th>
             </tr>
         </thead>
     </table>
@@ -28,9 +29,10 @@ $(document).ready(function() {
     // Define a mapping of header text to data column names
     var columnMapping = {
         'ID': 'id',
-        'Name': 'name',
-        'Email': 'email',
-        'Country': 'country',
+        'Number': 'number',
+        'Weight': 'weight',
+        'Content': 'content',
+        'Bol ID': 'bol_id',
         // Add more mappings here as needed
     };
 
@@ -43,6 +45,9 @@ $(document).ready(function() {
         }
     });
 
+    var tableName = 'containers';  // Define the table name
+
+
     $('#myTable').DataTable({
         processing: true,
         serverSide: true,
@@ -52,6 +57,7 @@ $(document).ready(function() {
             data: function(d) {
                 // Send column names to the backend along with other request data
                 d.columns = columnNames;
+                d.tableName = tableName;
             }
         },
         dom: 'Qlfrtip',  // Enables SearchBuilder ('Q' for SearchBuilder, 'lfrtip' for standard elements)
