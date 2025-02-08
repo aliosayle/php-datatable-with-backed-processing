@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHP DataTable with Search Builder and Column Visibility</title>
 
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/searchbuilder/1.3.0/css/searchBuilder.dataTables.min.css">
@@ -16,19 +19,23 @@
 
 </head>
 
-<body>
-    <h2>PHP DataTable with Search Builder</h2>
-    <table id="myTable" class="display" style="width:100%">
+<body class="bg-gray-100 py-10">
+    <div class="max-w-5xl mx-auto">
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Test Test</h2>
+            <table id="myTable" class="display w-full">
+
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Number</th>
-                <th>Weight</th>
-                <th>Content</th>
-                <th>Bol ID</th>
+                <th>Item</th>
+                <th>All Quantity</th>
+                <th>Total</th>
+                <th>Description</th>
             </tr>
         </thead>
     </table>
+    </div>
+    </div>
 
     <!-- jQuery and DataTables JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -42,11 +49,10 @@
         $(document).ready(function () {
             // Define a mapping of header text to data column names
             var columnMapping = {
-                'ID': 'id',
-                'Number': 'number',
-                'Weight': 'weight',
-                'Content': 'content',
-                'Bol ID': 'bol_id',
+                'Item': 'item',
+                'All Quantity': 'allqty',
+                'Total': 'total',
+                'Description': 'descr1',
                 // Add more mappings here as needed
             };
 
@@ -59,7 +65,7 @@
                 }
             });
 
-            var tableName = 'containers';  // Define the table name
+            var tableName = 'items';  // Define the table name
 
             var table = $('#myTable').DataTable({
                 processing: true,

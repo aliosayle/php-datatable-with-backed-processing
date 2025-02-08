@@ -4,7 +4,7 @@ ini_set('log_errors', 1); // Enable error logging
 ini_set('error_log', __DIR__ . '/debug.log'); // Log errors to the debug.log file
 
 $host = 'localhost';
-$db = 'CMS';
+$db = 'orekaabidjan_copy';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';
@@ -22,7 +22,6 @@ if ($mysqli->connect_error) {
 $mysqli->set_charset($charset);
 
 // Log the incoming POST data to 'debug.log'
-file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true));
 
 // DataTables request parameters
 $draw = filter_input(INPUT_POST, 'draw', FILTER_VALIDATE_INT) ?? 0;
@@ -34,6 +33,10 @@ $orderColumnIndex = filter_input(INPUT_POST, 'order', FILTER_DEFAULT, FILTER_REQ
 $orderDirection = filter_input(INPUT_POST, 'order', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY)[0]['dir'];
 $columns = filter_input(INPUT_POST, 'columns', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 $table = filter_input(INPUT_POST, 'tableName', FILTER_SANITIZE_STRING);
+
+
+file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true));
+
 
 // Check if 'searchBuilder' is set and decode it safely
 
@@ -76,7 +79,7 @@ file_put_contents(__DIR__ . '/search_builder.log', print_r($searchBuilder, retur
 // Process SearchBuilder criteria
 if (isset($searchBuilder['criteria']) && is_array($searchBuilder['criteria'])) {
     foreach ($searchBuilder['criteria'] as $criterion) {
-        $field = $criterion['data']; // Corrected field name
+        $field = $criterion['origData']; // Corrected field name
         $condition = $criterion['condition'];
         $value = $criterion['value'][0]; // Get the value from the array
 
@@ -162,7 +165,7 @@ if (isset($searchBuilder['criteria']) && is_array($searchBuilder['criteria'])) {
 }
 
 
-$logic = $searchBuilder['logic'] ?? 'AND'; // Default to 'AND'
+$logic = in_array(strtoupper($searchBuilder['logic'] ?? ''), ['AND', 'OR']) ? strtoupper($searchBuilder['logic']) : 'AND';
 
 // Combine WHERE clauses if any
 if (!empty($whereClauses)) {
@@ -172,7 +175,7 @@ if (!empty($whereClauses)) {
 // Count filtered records
 $filteredQuery = "SELECT COUNT(*) FROM $table";
 if (!empty($whereClauses)) {
-    $filteredQuery .= " WHERE " . implode(" AND ", $whereClauses);
+    $filteredQuery .= " WHERE " . implode(" $logic ", $whereClauses);
 }
 
 $filteredStmt = $mysqli->prepare($filteredQuery);
