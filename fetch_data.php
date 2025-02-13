@@ -2,6 +2,10 @@
 error_reporting(E_ALL); // Report all errors
 ini_set('log_errors', 1); // Enable error logging
 ini_set('error_log', __DIR__ . '/debug.log'); // Log errors to the debug.log file
+if (file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true)) === false) {
+    error_log("Failed to write to debug.log");
+}
+
 
 $host = 'localhost';
 $db = 'orekaabidjan_copy';
