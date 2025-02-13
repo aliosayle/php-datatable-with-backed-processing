@@ -1,16 +1,16 @@
 <?php
 error_reporting(E_ALL); // Report all errors
 ini_set('log_errors', 1); // Enable error logging
-ini_set('error_log', __DIR__ . '/debug.log'); // Log errors to the debug.log file
-if (file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true)) === false) {
-    error_log("Failed to write to debug.log");
-}
+// ini_set('error_log', __DIR__ . '/debug.log'); // Log errors to the debug.log file
+// if (file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true)) === false) {
+//     error_log("Failed to write to debug.log");
+// }
 
 
 $host = 'localhost';
 $db = 'orekaabidjan_copy';
 $user = 'root';
-$pass = '';
+$pass = 'goldfish@2025';
 $charset = 'utf8mb4';
 
 // Create a mysqli connection
@@ -28,18 +28,15 @@ $mysqli->set_charset($charset);
 // Log the incoming POST data to 'debug.log'
 
 // DataTables request parameters
-$draw = filter_input(INPUT_POST, 'draw', FILTER_VALIDATE_INT) ?? 0;
-$start = filter_input(INPUT_POST, 'start', FILTER_VALIDATE_INT) ?? 0;
-$length = filter_input(INPUT_POST, 'length', FILTER_VALIDATE_INT) ?? 10;
-$searchValue = filter_input(INPUT_POST, 'search', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY)['value'] ?? '';
-$searchBuilder = filter_input(INPUT_POST, 'searchBuilder', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? [];
-$orderColumnIndex = filter_input(INPUT_POST, 'order', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY)[0]['column'];
-$orderDirection = filter_input(INPUT_POST, 'order', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY)[0]['dir'];
-$columns = filter_input(INPUT_POST, 'columns', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-$table = filter_input(INPUT_POST, 'tableName', FILTER_SANITIZE_STRING);
-
-
-file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true));
+$draw = 1;
+$start = 0;
+$length = 10;
+$searchValue = '';
+$searchBuilder = [];
+$orderColumnIndex = 0;
+$orderDirection = 'ASC';
+$columns = ['item', 'allqty', 'total', 'descr1']; // Example columns
+$table = 'items'; // Example table name
 
 
 // Check if 'searchBuilder' is set and decode it safely
@@ -77,7 +74,7 @@ if (!empty($searchValue)) {
     }
 }
 
-file_put_contents(__DIR__ . '/search_builder.log', print_r($searchBuilder, return: true));
+// file_put_contents(__DIR__ . '/search_builder.log', print_r($searchBuilder, return: true));
 
 
 // Process SearchBuilder criteria
@@ -204,7 +201,7 @@ $params[] = (int) $start;
 $params[] = (int) $length;
 $types .= 'ii'; // Integer types for pagination parameters
 
-file_put_contents(__DIR__ . '/query.log', json_encode($query, JSON_PRETTY_PRINT));
+// file_put_contents(__DIR__ . '/query.log', json_encode($query, JSON_PRETTY_PRINT));
 
 
 // Execute the main query
@@ -228,7 +225,7 @@ $response = [
 ];
 
 // Log the response to 'response.log'
-file_put_contents(__DIR__ . '/response.log', json_encode($response, JSON_PRETTY_PRINT));
+// file_put_contents(__DIR__ . '/response.log', json_encode($response, JSON_PRETTY_PRINT));
 
 // Return JSON response
 header('Content-Type: application/json');
